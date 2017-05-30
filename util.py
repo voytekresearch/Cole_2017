@@ -38,23 +38,16 @@ def loadmeta():
     return Fs, t, Spd, Sdy, flo, fhi
 
 
-def loadPD(preload=True, filepath='/gh/data/PD/PDdatapreprocess053016.mat',
-           dolowpass=True, donotches=True):
+def loadPD(filepath='data.mat'):
     '''
-    Load the PD and data provided by Cora and do preprocessing:
+    Load the data after the following preprocessing:
     1. Low-pass filter at 200Hz
     2. Notch filter at high frequency peaks for each subject
 
     Parameters
     ----------
-    preload : boolean
-        True: load the data that has already been low-pass and notch filtered
     filepath : string
         path to saved data
-    dolowpass : boolean
-        True: low-pass data at 200Hz
-    donotches : boolean
-        True: remove high frequency peaks
 
     Returns
     -------
@@ -63,42 +56,11 @@ def loadPD(preload=True, filepath='/gh/data/PD/PDdatapreprocess053016.mat',
         'B' : subject-by-time array for PD patients pre-DBS
         'D' : subject-by-time array for PD patients on DBS
     '''
-
-    if preload:
-        if not np.logical_and(dolowpass, donotches):
-            raise ValueError('Cannot load data without low pass and notches')
-
-        data = io.loadmat(filepath, struct_as_record=False, squeeze_me=True)
-        ecoghf = _blankecog()
-        ecoghf['B'] = data['B']
-        ecoghf['D'] = data['D']
-        return ecoghf
-
-    else:
-        # Define ecog array
-        ecog = {}
-
-        # Load PD ecog data, obtained from Cora
-        matFile = 'data_ON_OFF_DBS_rest_23pts'  # 'PDdata091515'
-        filename = os.path.join('/gh/data/PD/', matFile)
-        dataMat = io.loadmat(filename, appendmat=True,
-                             struct_as_record=False, squeeze_me=True)
-        ecog['D'] = dataMat['DBS_ON']
-        ecog['B'] = dataMat['before_DBS']
-
-        # apply 200Hz low-pass filter
-        if dolowpass:
-            ecog = _lowpass200_all(ecog)
-
-        # Remove high frequency artifacts
-        if donotches:
-            ecog = _remove_hifreqpeaks_all(ecog)
-
-        if np.logical_and(dolowpass, donotches):
-            print('Re-saving preprocessed data')
-            io.savemat('/gh/data/PD/PDdatapreprocess053016.mat', ecog)
-
-        return ecog
+    data = io.loadmat(filepath, struct_as_record=False, squeeze_me=True)
+    ecog = _blankecog()
+    ecog['B'] = data['B']
+    ecog['D'] = data['D']
+    return ecog
 
 
 def _lowpass200_all(ecog):
