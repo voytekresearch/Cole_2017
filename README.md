@@ -9,8 +9,12 @@ This repo contains one notebook per figure, showing the computation for each pan
 
 **util.py** - functions for loading data, running analysis across all subjects, and other miscellaneous tools
 
-**shape.py** - functions for quantifying the waveform shape of the oscillations
+**shape.py** - functions for quantifying the waveform shape of the oscillations. See note below.
 
 **pac.py** - algorithms for estimating phase-amplitude coupling
 
 **plt.py** - functions for plotting results
+
+## Quantifying oscillation shape
+
+For future studies characterizing the waveform shape of oscillations, see the actively maintained `shape` module in [neurodsp](https://github.com/voytekresearch/neurodsp).
