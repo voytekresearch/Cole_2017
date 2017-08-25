@@ -5,6 +5,7 @@ Algorithms for estimating phase-amplitude coupling
 """
 import numpy as np
 import scipy as sp
+from scipy import signal
 
 
 def ozkurt(lo, hi, f_lo, f_hi, fs=1000,
