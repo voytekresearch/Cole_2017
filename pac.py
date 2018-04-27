@@ -147,7 +147,7 @@ def mi_tort(lo, hi, f_lo, f_hi, fs=1000,
     return pac
 
 
-def comodulogram(lo, hi, p_range, a_range, dp, da, fs, pac_method='mi_tort', w=7):
+def comodulogram(lo, hi, p_range, a_range, dp, da, fs, pac_method='mi_tort', w_lo=7, w_hi=7):
     """
     Calculate PAC for many small frequency bands
 
@@ -174,8 +174,10 @@ def comodulogram(lo, hi, p_range, a_range, dp, da, fs, pac_method='mi_tort', w=7
         'glm' - See Penny, 2008
         'mi_canolty' - See Canolty, 2006
         'ozkurt' - See Ozkurt & Schnitzler, 2011
-    w : float
-        Number of cycles for each morlet filter
+    w_lo : float
+        Number of cycles for each morlet filter for phase
+    w_hi : float
+        Number of cycles for each morlet filter for amp
 
     Returns
     -------
@@ -220,14 +222,14 @@ def comodulogram(lo, hi, p_range, a_range, dp, da, fs, pac_method='mi_tort', w=7
     phaseT = np.zeros(P, dtype=object)
     for p in range(P):
         f_lo = f_phases[p]
-        loF = morletf(lo, f_lo, fs, w=w)
+        loF = morletf(lo, f_lo, fs, w=w_lo)
         phaseT[p] = np.angle(loF)
 
     # Calculate all amplitude time series
     ampT = np.zeros(A, dtype=object)
     for a in range(A):
         f_hi = f_amps[a]
-        hiF = morletf(hi, f_hi, fs, w=w)
+        hiF = morletf(hi, f_hi, fs, w=w_hi)
         ampT[a] = np.abs(hiF)
 
     # Calculate PAC for every combination of P and A

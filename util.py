@@ -345,14 +345,14 @@ def calculate_comodulogramPAC(ecog, comodkwargs=None):
     return cpac
 
 
-def _comodPAC(x, flo, fhi, Fs, dp=2, da=4, w_lo=3, w_hi=3, pac_method='mi_tort'):
+def _comodPAC(x, flo, fhi, Fs, dp=2, da=4, w_lo=7, w_hi=7, pac_method='mi_tort'):
 
     # Calculate comodulogram
     # Filter order was based off presuming deHemptinne 2015 used the default FIR1 filter order
     # using eegfilt:
     # https://sccn.ucsd.edu/svn/software/eeglab/functions/sigprocfunc/eegfilt.m
     from pac import comodulogram
-    comod = comodulogram(x, x, flo, fhi, dp, da, fs=Fs, pac_method='mi_tort')
+    comod = comodulogram(x, x, flo, fhi, dp, da, w_lo=w_lo, w_hi=w_hi, fs=Fs, pac_method='mi_tort')
     return np.mean(comod)
 
 
