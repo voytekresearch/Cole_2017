@@ -35,7 +35,7 @@ def findpt(x, f_osc, Fs=1000., w=3, boundary=0):
     """
 
     # Filter in narrow band
-    from pacpy.filt import firf
+    from util import firf
     xn = firf(x, f_osc, Fs, w=w, rmvedge=False)
 
     # Find zero crosses
@@ -192,7 +192,7 @@ def _ampthresh(ampTH, x, fosc, Fs, Es, metric):
     Restrict data to the time points at which the extrema
     """
     if ampTH > 0:
-        from pacpy.pac import pa_series
+        from pac import pa_series
         _, bamp = pa_series(x, x, fosc, fosc, fs=Fs)
         bamp = _edgeadd_paseries(bamp, fosc, Fs)
         bamp = bamp[Es]
