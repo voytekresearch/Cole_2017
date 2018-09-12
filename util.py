@@ -387,7 +387,7 @@ def firf(x, f_range, fs=1000, w=3, rmvedge=True):
     if np.any(np.array(f_range) < 0):
         raise ValueError('Filter frequencies must be positive.')
 
-    Ntaps = np.floor(w * fs / f_range[0])
+    Ntaps = int(np.floor(w * fs / f_range[0]))
     if len(x) < Ntaps:
         raise RuntimeError(
             'Length of filter is loger than data. '
